@@ -1,0 +1,3 @@
+First argument must be "-i <path>" or "--input <path>.
+Second argument must be "-o <path>" or "--output <path>.
+Use "-h" or "--help" to print help.

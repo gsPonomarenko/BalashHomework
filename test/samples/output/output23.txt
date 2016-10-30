@@ -1,0 +1,5 @@
+Optimal solution:
+Product 1 costed 12
+Product 2 costed 45
+
+Total solution cost: 57

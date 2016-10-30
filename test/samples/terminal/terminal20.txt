@@ -1,0 +1,1 @@
+Input file coverage matrix must contain only digits 0 or 1.

@@ -1,0 +1,1 @@
+Input cost vector must contain only positive numbers.

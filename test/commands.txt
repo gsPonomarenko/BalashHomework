@@ -1,0 +1,23 @@
+BalashHomework.exe
+BalashHomework.exe aSDASGSDAFDFCXZ123
+BalashHomework.exe -h
+BalashHomework.exe --help
+BalashHomework.exe -i input/input.txt -o output/output5.txt
+BalashHomework.exe --input input/input.txt -o output/output6.txt
+BalashHomework.exe -i input/input7.txt -o output/output7.txt
+BalashHomework.exe --input input/input8.txt -o output/output8.txt
+BalashHomework.exe -i input/input9.txt --output output/output9.txt
+BalashHomework.exe --input input/input10.txt --output output/output10.txt
+BalashHomework.exe -i input/input11.txt -o output/output11.txt
+BalashHomework.exe -i input/input12.txt -o output/output12.txt
+BalashHomework.exe -i input/input13.txt -o output/output13.txt
+BalashHomework.exe -i input/input14.txt -o output/output14.txt
+BalashHomework.exe -i input/input15.txt -o output/output15.txt
+BalashHomework.exe -i input/input16.txt -o output/output16.txt
+BalashHomework.exe -i input/input17.txt -o output/output17.txt
+BalashHomework.exe -i input/input18.txt -o output/output18.txt
+BalashHomework.exe -i input/input19.txt -o output/output19.txt
+BalashHomework.exe -i input/input20.txt -o output/output20.txt
+BalashHomework.exe -i input/input21.txt -o output/output21.txt
+BalashHomework.exe -i input/input22.txt -o output/output22.txt
+BalashHomework.exe -i input/input23.txt -o output/output23.txt

@@ -1,0 +1,8 @@
+Optimal solution:
+Product 5 costed 2
+Product 1 costed 3
+Product 2 costed 4
+Product 3 costed 8
+Product 4 costed 59
+
+Total solution cost: 76
