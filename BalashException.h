@@ -9,8 +9,9 @@
 /* Balash exception. */
 class BalashException: public std::exception {
   public:
-    BalashException(const std::string& msg);
-    const char* what() const;
+    BalashException(const std::string& msg) throw();
+    virtual const char* what() const throw();
+    ~BalashException() throw();
 
   protected:
     std::string ErrorMessage;

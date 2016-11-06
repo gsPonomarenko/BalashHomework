@@ -1,5 +1,3 @@
-#pragma once
-
 #include "Balash.h"
 
 /* Initialize pointers by nulls. */
@@ -15,7 +13,7 @@ Balash::~Balash() {
   if (oldOrder != NULL) {
     delete[] oldOrder;
   }
-  
+
   /* Free array of costs. */
   if (cost != NULL) {
     delete[] cost;
@@ -42,7 +40,7 @@ void Balash::initialize(char* input, char* output) {
   inFile = std::fstream(inputPath, std::ios::in);
   if (!inFile.fail()) {
     /* Input file is opened seccesfully. */
-    
+
     /* Read tools count from input file. */
     getToolsCount();
     /* Read cost vector from input file. */
@@ -83,7 +81,7 @@ void Balash::getToolsCount() {
 void Balash::getCostVector() {
   /* Temporary string to read lines from input file. */
   std::string temp;
-  
+
   /* Temporary vector for costs. */
   std::vector<int> vec;
 
@@ -135,20 +133,20 @@ void Balash::getCostVector() {
   for (int i = 0; i < tools; i++) {
     cost[i] = vec[i];
   }
-  
+
 }
 
 void Balash::getThreatsCount() {
   /* Temporary string to read lines from input file. */
   std::string temp;
-  
+
   /* Read cost count from input file. */
   std::getline(inFile, temp);
-  
+
   /* Try to convert string with cost count to int. */
   try {
     threats = std::stoi(temp);
-  } 
+  }
   catch (std::invalid_argument ex) {
     throw BalashException("Threats count is incorrect.");
   }
@@ -232,10 +230,10 @@ void Balash::getCoverageMatrix() {
     for (int j = 0; j < tools; j++) {
       cov[i][j] = vec[j];
     }
-    
+
     /* Clear temporary vector. */
     vec.clear();
-    
+
     i++;
     std::getline(inFile, temp);
   }
@@ -298,7 +296,7 @@ void Balash::sortByCost() {
 
   /* Sort vector of pairs cost+index by cost. */
   std::sort(vec.begin(), vec.end(), sortPredicate);
-  
+
   /* Create array for old indexes in new order. */
   oldOrder = new int[tools];
   /* Create coverage matrix for new order. */
@@ -316,7 +314,7 @@ void Balash::sortByCost() {
       newCov[i][j] = cov[i][pair.second];
     }
   }
-  
+
   /* Free old coverage matrix. */
   for (int i = 0; i < threats; i++) {
     delete[] cov[i];
@@ -361,7 +359,7 @@ void Balash::printResult(int set) {
   /* Send solution to the output file. */
   int mask = 1;
   int sum = 0;
-  
+
   /* Try to open output file. */
   std::fstream fs(outputPath, std::ios::out | std::ios::trunc);
   if (!fs.fail()) {
@@ -411,10 +409,10 @@ void Balash::compute() {
   /* Example solving function. */
   /* Do not really work. */
   int set = 5;
-  
+
   checkCoverageMatrix();
   sortByCost();
-  
+
   /* Make a solution with maximal existing set. */
   for (int i = 0; i < tools; i++) {
     set = set | (1 << i);

@@ -1,7 +1,5 @@
 //Copyright Grigory Ponomarenko 2016 (c)
 
-#pragma once
-
 #include "BalashException.h"
 
 /* Balash exception realisation. */

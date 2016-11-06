@@ -1,12 +1,11 @@
 //Copyright Grigory Ponomarenko 2016 (c)
 
-#pragma once
-
 #include "Balash.h"
+#include <cstring>
 
 void printHelp();
 
-void main(char argc, char* argv[]) {
+int main(int argc, char* argv[]) {
   Balash balash;
   if (argc > 1) {
     if (!(strcmp(argv[1], "-h") && strcmp(argv[1], "--help"))) {
@@ -20,7 +19,7 @@ void main(char argc, char* argv[]) {
   if (argc > 4) {
     if (strcmp(argv[1], "-i") && strcmp(argv[1], "--input")) {
       /* If 1 argument isn't -i or --input stop and exit. */
-      std::cout << "Incorrect first argument." << std::endl; 
+      std::cout << "Incorrect first argument." << std::endl;
       std::cout << "First argument must be \"-i <path>\" or \"--input <path>." << std::endl;
       std::cout << "Use \"-h\" or \"--help\" to print help." << std::endl;
       exit(0);
@@ -47,7 +46,7 @@ void main(char argc, char* argv[]) {
     printHelp();
     exit(0);
   }
-
+  return 0;
 }
 
 void printHelp() {
