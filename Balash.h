@@ -7,6 +7,7 @@
 #include <fstream>
 #include <vector>
 #include <algorithm>
+#include <math.h>
 #include "BalashException.h"
 
 class Balash {
@@ -35,14 +36,23 @@ class Balash {
     /* Sort costs by order. */
     void sortByCost();
     
-    /*Find zero lines or rows in coverage matrix. */
+    /* Find zero lines or rows in coverage matrix. */
     void checkCoverageMatrix();
    
+    /* Solving functions. */
+    /* Main branching function. */
+    void branch(unsigned int value);
+    /* Checking solution is permissible funstion. */
+    bool checkSolutionPermissible(unsigned int value);
+    /* Computing cost computing function. */
+    int getResultFunction(unsigned int value);
+    /* Cutting branches function. */
+    void markBranchAsUnavailable(unsigned int value);
+    /* Comparing solutions in tree with record function. */
+    void checkSolutionsBiggerThenRecord(unsigned int value, int result);
+
     /* Printing solution. */
     void printResult(int);
-    
-    /* Print cost vector and coverage matrix for debug. */
-    void printDebug();
 
     /* Input and output paths and streams. */
     std::string inputPath;
@@ -59,7 +69,6 @@ class Balash {
 
     /* Cost vector. */
     int* cost;
-    int* c;
     
     /* Coverage Matrix. */
     int** cov;
@@ -68,4 +77,5 @@ class Balash {
     int* subsets;
 
     int record;
+    unsigned int recordSet;
 };
