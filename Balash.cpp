@@ -40,7 +40,6 @@ void Balash::initialize(char* input, char* output) {
   inFile = std::fstream(inputPath, std::ios::in);
   if (!inFile.fail()) {
     /* Input file is opened seccesfully. */
-
     /* Read tools count from input file. */
     getToolsCount();
     /* Read cost vector from input file. */
