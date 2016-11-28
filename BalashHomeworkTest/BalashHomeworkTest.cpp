@@ -77,6 +77,9 @@ void main() {
           std::cout << "Test " + std::to_string(i + 1);
           std::cout << " is not passed.\n";
         }
+      } else if (terminalFile.fail() && sampleTerminalFile.fail()) {
+        std::cout << "Test" + std::to_string(i + 1);
+        std::cout << " is passed.\n";
       } else {
         std::cout << "Test " + std::to_string(i + 1);
         std::cout << " is not passed.\n";
