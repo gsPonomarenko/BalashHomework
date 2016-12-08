@@ -1,0 +1,1 @@
+Input cost vector must contain only digits from 1 to 9.

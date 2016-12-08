@@ -8,7 +8,10 @@
 #include <vector>
 #include <algorithm>
 #include <math.h>
+#include <bitset>
 #include "BalashException.h"
+
+#define MAX_N 1024
 
 class Balash {
   /* Balash method for set cover problem solving. */
@@ -41,18 +44,14 @@ class Balash {
    
     /* Solving functions. */
     /* Main branching function. */
-    void branch(unsigned int value);
+    void branch(std::bitset<MAX_N> value);
     /* Checking solution is permissible funstion. */
-    bool checkSolutionPermissible(unsigned int value);
+    bool checkSolutionPermissible(std::bitset<MAX_N> value);
     /* Computing cost computing function. */
-    int getResultFunction(unsigned int value);
-    /* Cutting branches function. */
-    void markBranchAsUnavailable(unsigned int value);
-    /* Comparing solutions in tree with record function. */
-    void checkSolutionsBiggerThenRecord(unsigned int value, int result);
+    int getResultFunction(std::bitset<MAX_N> value);
 
     /* Printing solution. */
-    void printResult(int);
+    void printResult(std::bitset<MAX_N> result);
 
     /* Input and output paths and streams. */
     std::string inputPath;
@@ -73,9 +72,6 @@ class Balash {
     /* Coverage Matrix. */
     int** cov;
 
-    /* Subsets assert. */
-    int* subsets;
-
     int record;
-    unsigned int recordSet;
+    std::bitset<MAX_N> recordSet;
 };

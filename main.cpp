@@ -38,7 +38,19 @@ int main(int argc, char* argv[]) {
         balash.compute();
       }
       catch (BalashException except) {
+        /* Print error to terminal. */
         std::cout << except.what() << std::endl;
+
+        /* Write error to file. */
+        std::string outputPath = argv[4];
+        std::fstream fs(outputPath, std::ios::out | std::ios::trunc);
+        if (!fs.fail()) {
+          fs << except.what();
+          /* Close output file. */
+          fs.close();
+        } else {
+          std::cout << "Can't open output file "+outputPath << std::endl;
+        }
         exit(0);
       }
     }

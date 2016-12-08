@@ -1,0 +1,1 @@
+Cost matrix contains 4 lines. It is bigger than threats count.

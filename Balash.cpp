@@ -71,9 +71,11 @@ void Balash::getToolsCount() {
   } catch (std::out_of_range ex) {
     throw BalashException("Tools count is to big.");
   }
-  /* Check that cost count is from 1 to 32. */
-  if (tools <= 0 || tools > 32) {
-    throw BalashException("Tools count must be from 1 to 32");
+  /* Check that cost count is from 1 to MAX_N. */
+  if (tools <= 0 || tools > MAX_N) {
+    std::string msg = "Tools count must be from 1 to ";
+    msg += std::to_string(MAX_N);
+    throw BalashException(msg);
   }
 }
 
@@ -152,9 +154,11 @@ void Balash::getThreatsCount() {
   catch (std::out_of_range ex) {
     throw BalashException("Threats count is to big.");
   }
-  /* Check that cost count is from 1 to 32. */
-  if (threats <= 0 || threats > 32) {
-    throw BalashException("Threats count must be from 1 to 32");
+  /* Check that cost count is from 1 to MAX_N. */
+  if (threats <= 0 || threats > MAX_N) {
+    std::string msg = "Threats count must be from 1 to ";
+    msg += std::to_string(MAX_N);
+    throw BalashException(msg);
   }
 }
 
@@ -353,9 +357,8 @@ void Balash::checkCoverageMatrix() {
   }
 }
 
-void Balash::printResult(int set) {
+void Balash::printResult(std::bitset<MAX_N> set) {
   /* Send solution to the output file. */
-  int mask = 1;
   int sum = 0;
 
   /* Try to open output file. */
@@ -365,7 +368,7 @@ void Balash::printResult(int set) {
     /* Print optimal products set with costs. */
     fs << "Optimal solution:\n";
     for (int i = 0; i < tools; i++) {
-      if (set & (mask << i)) {
+      if (set[i] == true) {
         fs << "Product " + std::to_string(oldOrder[i] + 1);
         fs << " costed " + std::to_string(cost[i]) << std::endl;
         sum += cost[i];
@@ -387,75 +390,66 @@ void Balash::printResult(int set) {
 void Balash::compute() {
   /* Solving function. */
 
-  /* Create subsets array. */
-  unsigned int subsetsCount = pow(2, tools);
-  subsets = new int[subsetsCount];
-  for(int i = 0; i < subsetsCount; i++) {
-    subsets[i] = 0;
-  }
-
   /* Initialize record and recordSet. */
   record = INT32_MAX;
-  recordSet = 0;
 
   /* Check coverage matrix. */
   checkCoverageMatrix();
   /* Sort cost vector by cost. */
   sortByCost();
 
+  std::bitset<MAX_N> tempSet;
   /* Begin branching with value = 0 */
-  branch(0);
-
-  delete subsets;
+  branch(tempSet);
 
   /* Print solution. */
   printResult(recordSet);
 }
 
-void Balash::branch(unsigned int value) {
+void Balash::branch(std::bitset<MAX_N> value) {
   int result = 0;
 
-  /* Check subset is not marked as unavailable. */
-  if(subsets[value] == 0) {\
-    /* Mark that solution for current subset is computed. */
-    subsets[value] = 1;
-    if(checkSolutionPermissible(value) == true) {
-      /* If solution is permissible compute the solution. */
-      result = getResultFunction(value);
-      if(result < record) {
-        /* If result < record then save new record */
-        record = result;
-        recordSet = value;
-      }
-      /* Find solutions in branch that are bigger thaen record *
-       * and mark then as unavailable.                         */
-      checkSolutionsBiggerThenRecord(value, result);
+  if(checkSolutionPermissible(value) == true) {
+    /* If solution is permissible compute the solution. */
+    result = getResultFunction(value);
+    if(result < record) {
+      /* If result < record then save new record */
+      record = result;
+      recordSet = value;
+    } else {
+      return;
     }
+  }
 
-    unsigned int mask = 1;
-    /* Getting indexes of tools aren't included in set. */
-    for (int i = 0; i < tools; i++) {
-      if((mask & value) == 0){
-        /* Compute solutions in branch recousively. */
-        branch(value | mask);
-      }
-      mask = mask << 1;
+  /* Get position of the last 1. */
+  int maxPositionOf1 = -1;
+  for(int i = tools-1; i >= 0; i--) {
+    if (value[i] == true) {
+      maxPositionOf1 = i;
+      i = 0;
     }
+  }
+
+  /* Getting indexes of tools aren't included in set */
+  /* and weren't been calculated before.             */
+  for (int i = maxPositionOf1+1; i < tools; i++) {
+    /* Compute solutions in branch recousively. */
+    value.set(i, 1);
+    branch(value);
+    value.set(i, 0);
   }
 }
 
-bool Balash::checkSolutionPermissible(unsigned int value) {
-  unsigned int mask = 1;
+bool Balash::checkSolutionPermissible(std::bitset<MAX_N> value) {
   int sum = 0;
 
   /* Getting indexes of tools included in set. */
   for(int i = 0; i < threats; i++) {
     for (int j = 0; j < tools; j++) {
-      if((mask & value) != 0){
+      if(value[j] == true){
         /* Add elem from coverage matrix to summary. */
         sum = sum + cov[i][j];
       }
-      mask = mask << 1;
     }
 
     if(sum == 0) {
@@ -464,61 +458,22 @@ bool Balash::checkSolutionPermissible(unsigned int value) {
     } else {
       /* Else continue loop. */
       sum = 0;
-      mask = 1;
     }
   }
 
   return true;
 }
 
-int Balash::getResultFunction(unsigned int value) {
-  unsigned int mask = 1;
+int Balash::getResultFunction(std::bitset<MAX_N> value) {
   int sum = 0;
 
   /* Getting indexes of tools included in set. */
   for (int j = 0; j < tools; j++) {
-    if((mask & value) != 0){
+    if(value[j] == true){
       /* Add cost of included tool to summary. */
       sum = sum + cost[j];
     }
-    mask = mask << 1;
   }
 
   return sum;
-}
-
-void Balash::markBranchAsUnavailable(unsigned int value) {
-  /* Mark solution as unavailable. */
-  if(subsets[value] == 0) {
-    subsets[value] = -1;
-  } else {
-    return;
-  }
-
-  unsigned int mask = 1;
-  /* Getting tools that aren't included in set. */
-  for (int i = 0; i < tools; i++) {
-    if((mask & value) == 0){
-      /* Fix the tool and continue recursively. */
-      markBranchAsUnavailable(value | mask);
-    }
-    mask = mask << 1;
-  }
-}
-
-void Balash::checkSolutionsBiggerThenRecord(unsigned int value, int result) {
-  unsigned int mask = 1;
-  int sum = result;
-
-  /* Getting tools that aren't included in set. */
-  for (int j = 0; j < tools; j++) {
-    if((mask & value) == 0){
-      /* If sum + tool[j] cost are bigger then record *
-       * mark this branch as unavailable.             */
-      if(sum + cost[j] > record) {
-        markBranchAsUnavailable(value | mask);
-      }
-    }
-    mask = mask << 1;
-  }
 }
